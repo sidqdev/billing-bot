@@ -40,7 +40,16 @@ async def pay(message: Message):
         if user.unique_id == str(message.from_user.id):
             continue
 
-        billing_api.in_system_transfer(user.unique_id, str(message.from_user.id), amount_to_user, comment='-')
+        transaction = billing_api.in_system_transfer(user.unique_id, str(message.from_user.id), amount_to_user, comment='-')
+        try:
+            trns = f'''ID: {transaction.id}
+Amount: {transaction.amount}'''
+            await bot.send_message(
+                chat_id=int(user.unique_id),
+                text=trns
+            )
+        except:
+            pass
 
     await message.answer("Payed")
 
