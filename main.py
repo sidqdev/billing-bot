@@ -25,6 +25,7 @@ async def start(message: Message):
         last_name=message.from_user.last_name,
         credit_limit=-1000
     )
+
     await message.answer("Wellcome!")
 
 
