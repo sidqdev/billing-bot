@@ -36,11 +36,14 @@ async def pay(message: Message):
     
     amount_to_user = amount / len(users)
 
+    transaction_ids = list()
+
     for user in users:
         if user.unique_id == str(message.from_user.id):
             continue
 
         transaction = billing_api.in_system_transfer(user.unique_id, str(message.from_user.id), amount_to_user, comment='-')
+        transaction_ids.append(transaction.id)
         try:
             trns = f'''ID: {transaction.id}
 Amount: {transaction.amount}'''
@@ -51,7 +54,7 @@ Amount: {transaction.amount}'''
         except:
             pass
 
-    await message.answer("Payed")
+    await message.answer(f"Payed, transaction ids: {', '.join(map(str, transaction_ids))}")
 
 
 @dp.message_handler(commands='who')
